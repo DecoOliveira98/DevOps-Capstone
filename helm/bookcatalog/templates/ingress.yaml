@@ -2,22 +2,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  # The name of your ingress (set by Helm)
-  name: {{ include "chart.fullname" . }}
+
+  name: {{ include "bookcatalog.fullname" . }}
   labels:
-    # Standard chart labels
-    {{- include "chart.labels" . | nindent 4 }}
-  # Optional ingress annotations (for nginx, cert-manager, etc)
+   
+    {{- include "bookcatalog.labels" . | nindent 4 }}
+  
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  # Optional: specify ingress class (e.g. nginx, traefik)
+ 
   {{- with .Values.ingress.className }}
   ingressClassName: {{ . }}
   {{- end }}
-  # Optional: enable HTTPS with TLS certificates
+
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
@@ -28,7 +28,7 @@ spec:
       secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
-  # Rules define which hosts and paths route to your service
+  
   rules:
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
@@ -41,7 +41,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "chart.fullname" $ }}
+                name: {{ include "bookcatalog.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

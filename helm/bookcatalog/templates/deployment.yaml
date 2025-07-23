@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
 
-  name: {{ include "chart.fullname" . }}
+  name: {{ include "bookcatalog.fullname" . }}
   labels:
     
-    {{- include "chart.labels" . | nindent 4 }}
+    {{- include "bookcatalog.labels" . | nindent 4 }}
 spec:
   
   {{- if not .Values.autoscaling.enabled }}
@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
      
-      {{- include "chart.selectorLabels" . | nindent 6 }}
+      {{- include "bookcatalog.selectorLabels" . | nindent 6 }}
   template:
     metadata:
      
@@ -24,7 +24,7 @@ spec:
       {{- end }}
       labels:
         
-        {{- include "chart.labels" . | nindent 8 }}
+        {{- include "bookcatalog.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -35,7 +35,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
      
-      serviceAccountName: {{ include "chart.serviceAccountName" . }}
+      serviceAccountName: {{ include "bookcatalog.serviceAccountName" . }}
     
       {{- with .Values.podSecurityContext }}
       securityContext:
@@ -67,9 +67,9 @@ spec:
         
           envFrom:
             - configMapRef:
-                name: {{ include "chart.fullname" . }}-config
+                name: {{ include "bookcatalog.fullname" . }}-config
             - secretRef:
-                name: {{ include "chart.fullname" . }}-secret
+                name: {{ include "bookcatalog.fullname" . }}-secret
         
           {{- with .Values.resources }}
           resources:

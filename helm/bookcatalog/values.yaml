@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: decooliveira98/devops-capstone-web
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "v9"
 
 service:
   type: ClusterIP
@@ -22,7 +22,6 @@ ingress:
   tls: []
 
 env:
-  env:
   DJANGO_SECRET_KEY: "0)jcf@4_8r6=%pzo2z$ih6b+ugzi=6*jhv#%p9cnqeyai)k3vc"
   DEBUG: "False"
   DATABASE_NAME: "bookcatalog"
@@ -30,14 +29,25 @@ env:
   DATABASE_PASSWORD: "bookpass"
   DATABASE_HOST: "db"
   DATABASE_PORT: "5432"
+  DJANGO_ALLOWED_HOSTS: "*"
 
 resources: {}
 
 livenessProbe:
   httpGet:
-    path: /
-    port: 80
+    path: /healthz/
+    port: 8000
 readinessProbe:
   httpGet:
-    path: /
-    port: 80
+    path: /healthz/
+    port: 8000
+
+serviceAccount:
+  create: true
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
