@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bookcatalog
+      POSTGRES_USER: bookuser
+      POSTGRES_PASSWORD: bookpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 book_catalog.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_NAME=bookcatalog
+      - DATABASE_USER=bookuser
+      - DATABASE_PASSWORD=bookpass
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+volumes:
+  pgdata:
