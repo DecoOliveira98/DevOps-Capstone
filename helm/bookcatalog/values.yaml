@@ -1,0 +1,43 @@
+# values.yaml for Book Catalog Django App
+# Minimal and ready-to-use for production or demo
+
+replicaCount: 1
+
+image:
+  repository: decooliveira98/devops-capstone-web
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  hosts:
+    - host: bookcatalog.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+env:
+  env:
+  DJANGO_SECRET_KEY: "0)jcf@4_8r6=%pzo2z$ih6b+ugzi=6*jhv#%p9cnqeyai)k3vc"
+  DEBUG: "False"
+  DATABASE_NAME: "bookcatalog"
+  DATABASE_USER: "bookuser"
+  DATABASE_PASSWORD: "bookpass"
+  DATABASE_HOST: "db"
+  DATABASE_PORT: "5432"
+
+resources: {}
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
