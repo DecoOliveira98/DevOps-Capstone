@@ -18,11 +18,15 @@ from django.contrib import admin
 from django.http import  JsonResponse
 from django.urls import path, include
 
+
 def health(request):
     return JsonResponse({"status": "ok"})
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('books.urls')),  # Include the URLs from the books app
+    
+    
+     # Include the URLs from the books app
     path('healthz/', health),  # Health check endpoint
 
 ]
